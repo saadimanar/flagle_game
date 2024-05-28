@@ -50,6 +50,23 @@ img{
 }
 
 
+/* table */
+
+.table-container {
+   margin-top: 20px;
+}
+table {
+   width: 100%;
+   border-collapse: collapse;
+}
+ table, th, td {
+    border: 1px solid black;
+}
+th, td {
+  padding: 10px;
+  text-align: center;
+}
+
 /*
 
 .logo {

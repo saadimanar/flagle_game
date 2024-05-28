@@ -1,48 +1,59 @@
-
 import React, { useState, useEffect } from 'react'
 import reactLogo from '../assets/react.svg'
 import viteLogo from '/vite.svg'
 import '../App.css'
 import Header from './Header'
-//import flagImage from "../assets/SVG/AD.svg"
+import Hints from './Hints'
 import countriesData from "../countries.json"
-
-
-
-
+import { getDistance } from 'geolib';
 
 
 function App(){
-
-  
-
   const [currentCountry, setCurrentCountry] = useState(null);
-  const [correctAnswer, setCorrectAnswer] = useState("");
   const [flagCode, setFlagCode] = useState("");
   const [guess, setGuess] = useState('');  // State to store the current guess
+  const [gussedCountry, setGussedCountry] = useState(null);
   const [inputValue, setInputValue] = useState('');
   const [attempts, setAttempts] = useState(0);  // State to store the number of attempts
   const [message, setMessage] = useState('');  // State to store feedback messages
 
+  // calculate distance
+  const [lat1, setLat1] = useState('');
+  const [lon1, setLon1] = useState('');
+  const [distance, setDistance] = useState(null);
  
-
+ 
   useEffect(() => {
     console.log('render')
     displayRandomFlag();
   }, []);
+  
 
   const displayRandomFlag = () => {
     const randomIndex = Math.floor(Math.random() * 250);
     setMessage(`The flag belongs to ${countriesData[randomIndex].name}`);
     setCurrentCountry(countriesData[randomIndex]);
-    setCorrectAnswer(countriesData[randomIndex].name);
-    setFlagCode(countriesData[randomIndex].code2l);
+    setLat1(countriesData[randomIndex].center.latitude);
+    setLon1(countriesData[randomIndex].center.longitude);
+    setFlagCode(countriesData[randomIndex].code2l); 
   };
 
   const handleInputChange = (event) => {
     setGuess(event.target.value);
     setInputValue(event.target.value);
+    const foundCountry = countriesData.find(c => c.name.toLocaleLowerCase() === event.target.value.toLocaleLowerCase());
+    if(foundCountry){ // calculate distance
+      setGussedCountry(foundCountry);
+      const lat2 = foundCountry.center.latitude;
+      const lon2 = foundCountry.center.longitude
+      const dist = getDistance(
+        { latitude: parseFloat(lat1), longitude: parseFloat(lon1) },
+        { latitude: parseFloat(lat2), longitude: parseFloat(lon2) }
+       );
+       setDistance(dist / 1000); // Convert to kilometers
+    }
   };
+
 
   const handleGuessSubmit = (e) => {
    if(e.key == "Enter"){
@@ -52,16 +63,25 @@ function App(){
       setAttempts(0);
       setMessage("");
       displayRandomFlag();
-      //setCurrentFlag(flag);
     } else {
       setAttempts(attempts + 1);
-      setMessage('Incorrect, try again!');
-      //setCurrentFlag(null);
+      updateTable(gussedCountry.name, distance);
+     // setMessage(`Incorrect! gussed country is ${gussedCountry.name} and the distance is ${distance.toFixed(2)}`);
     }
     setGuess('');
     setInputValue('');
   }
   };
+
+
+  function updateTable(guess, distance) {
+    const tableBody = document.getElementById('guessesTable').getElementsByTagName('tbody')[0];
+    const newRow = tableBody.insertRow();
+    const guessCell = newRow.insertCell(0);
+    const distanceCell = newRow.insertCell(1);
+    guessCell.innerHTML = guess;
+    distanceCell.innerHTML = distance.toFixed(2) + ' km';
+} 
   
  const flagPath = "/SVG" + "/" + flagCode + ".svg";
  //const suggestions = countriesData.map(country => country.name);
@@ -69,7 +89,7 @@ function App(){
   <div>
     <Header/>
     {
-      currentCountry && (
+      currentCountry &&(
         <div className="flag">
           <img src={flagPath} />
           <input
@@ -80,12 +100,10 @@ function App(){
           onChange={handleInputChange} 
           onKeyDown={handleGuessSubmit}
           />
-        
-         
          <p>Attempts: {attempts}</p>
+         <Hints/>
          <p>{message}</p>
        </div>
-       
       )
     }
    

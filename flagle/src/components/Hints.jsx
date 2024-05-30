@@ -1,17 +1,8 @@
 import React from 'react'
 
+/*
 function Hints(){
-
-    function updateTable(guess, distance) {
-        const tableBody = document.getElementById('guessesTable').getElementsByTagName('tbody')[0];
-        const newRow = tableBody.insertRow();
-        const guessCell = newRow.insertCell(0);
-        const distanceCell = newRow.insertCell(1);
-        guessCell.innerHTML = guess;
-        distanceCell.innerHTML = distance.toFixed(2) + ' km';
-    } 
-    
-    return(
+    return (
         <div class="table-container">
         <table id="guessesTable">
             <thead>
@@ -26,5 +17,30 @@ function Hints(){
     </div>
     );
 }
+*/
 
-export default Hints;
+
+const Hints = ({ guesses }) => {
+    return (
+      <div className="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Guess</th>
+              <th>Distance (km)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {guesses.map((entry, index) => (
+              <tr key={index}>
+                <td>{entry.guess}</td>
+                <td>{entry.distance}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  };
+
+  export default Hints;

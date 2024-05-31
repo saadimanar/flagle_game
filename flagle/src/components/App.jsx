@@ -13,6 +13,7 @@ function App(){
   const [attempts, setAttempts] = useState(0);  // State to store the number of attempts
   const [message, setMessage] = useState('');  // State to store feedback messages
   const [message1, setMessage1] = useState('');
+  const [selectedCountry, setSelectedCountry] = useState(null);
 
   // store lattitude and longitude of correct country
   const [lat1, setLat1] = useState('');
@@ -37,7 +38,7 @@ function App(){
 
   const displayRandomFlag = () => {//begin of the game
     const randomIndex = Math.floor(Math.random() * 250);
-    setMessage1(`The flag belongs to ${countriesData[randomIndex].name}`);
+    //setMessage1(`The flag belongs to ${countriesData[randomIndex].name}`);
     setCurrentCountry(countriesData[randomIndex]);
     setLat1(countriesData[randomIndex].center.latitude);
     setLon1(countriesData[randomIndex].center.longitude);
@@ -47,6 +48,7 @@ function App(){
     setIsTableVisible(false);
     setAttempts(0);
     setMessage('');
+    setMessage1('');
   };
 
 
@@ -60,6 +62,7 @@ function App(){
       alert('You already guessed that country. Try a different one.');
       return;
     }
+
     // calculate distance
     const lat2 = guessedCountry.center.latitude;
     const lon2 = guessedCountry.center.longitude;
@@ -69,7 +72,6 @@ function App(){
      );
     const distance = dist / 1000; // Convert to kilometers
    
-
     //check if the guess is correct
     const ans = (currentCountry.name.toLowerCase() === currentguess.toLowerCase());
     if(ans){
@@ -85,6 +87,7 @@ function App(){
         setIsSelectVisible(false);
       }
       setGuesses([...guesses, { guess: currentguess, distance: distance + ' km' }]);
+      setSelectedCountry(null);
       setIsTableVisible(true);
       //setMessage(`Incorrect! gussed country is ${gussedCountry.name} and the distance is ${distance.toFixed(2)}`);
     }
@@ -106,6 +109,7 @@ function App(){
          {
           isSelectVisible && (
             <Select
+            value = {selectedCountry}
             onChange={handleSelect}
             options={countryOptions}
             placeholder="Select a country"
@@ -126,42 +130,4 @@ function App(){
 }
 
 export default App;
-
-
-
-
-/* <button onClick={handleGuessSubmit}>Submit</button>
-
-
-/*
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-      <Header></Header>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
-*/
-
 

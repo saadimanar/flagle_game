@@ -1,25 +1,5 @@
 import React from 'react'
 
-/*
-function Hints(){
-    return (
-        <div class="table-container">
-        <table id="guessesTable">
-            <thead>
-                <tr>
-                    <th>Guess</th>
-                    <th>Distance (km)</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
-    </div>
-    );
-}
-*/
-
-
 const Hints = ({ guesses }) => {
     return (
       <div className="table-container">

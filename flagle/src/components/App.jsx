@@ -7,6 +7,7 @@ import { getDistance } from 'geolib';
 import Select from 'react-select';
 
 
+
 function App(){
   const [currentCountry, setCurrentCountry] = useState(null);
   const [flagCode, setFlagCode] = useState("");
@@ -36,7 +37,7 @@ function App(){
   }, []);
   
 
-  const displayRandomFlag = () => {//begin of the game
+  const displayRandomFlag = () => {//Start of the game
     const randomIndex = Math.floor(Math.random() * 250);
     //setMessage1(`The flag belongs to ${countriesData[randomIndex].name}`);
     setCurrentCountry(countriesData[randomIndex]);
@@ -75,14 +76,14 @@ function App(){
     //check if the guess is correct
     const ans = (currentCountry.name.toLowerCase() === currentguess.toLowerCase());
     if(ans){
-      alert(`Correct! The flag belongs to ${currentCountry.name} WELL DONE!`);
+      alert(`Correct! The flag belongs to ${currentCountry.name}. Well done!`);
       setMessage1(`Correct! The flag belongs to ${currentCountry.name}`);
       setMessage('');
       setIsSelectVisible(false);
     }else{// wrong answer
       setAttempts(attempts + 1);
       if(attempts === 2){
-        setMessage1(`GAME IS OVER!`);
+        setMessage1(`GAME OVER!`);
         setMessage(`The correct answer is: ${currentCountry.name}`);
         setIsSelectVisible(false);
       }
@@ -104,7 +105,7 @@ function App(){
          <div className="flag">
          <img src={flagPath} alt={currentCountry.name}/>
          </div>
-         <p>{message1}</p>
+         <p className='bold-text'>{message1}</p>
          <p>{message}</p>
          {
           isSelectVisible && (
@@ -117,7 +118,7 @@ function App(){
            />
           )
          }
-         <p>Attempts: {attempts}/3</p>
+         <p>Attempts: <span className='bold-text'>{attempts}/3</span></p>
         {
           isTableVisible && (<Hints guesses={guesses}/>)
         }

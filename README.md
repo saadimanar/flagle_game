@@ -14,7 +14,7 @@ Flagle is a fun game where you guess the country based on its flag. This project
 
     ```sh
     git clone https://github.com/saadimanar/flagle_game.git
-    cd flagle
+    cd flagle_game
     ```
 
 2. **Install the dependencies:**

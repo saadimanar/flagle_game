@@ -2,8 +2,6 @@
 import React, { useState } from 'react';
 import Modal from './Modal';
 import '../App.css';
-//import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import HelpIcon from '@mui/icons-material/Help';
 
 const QuestionIcon = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -17,10 +15,17 @@ const QuestionIcon = () => {
   };
 
   return (
-    <div className="question-icon-container">
-      <span className="question-icon" onClick={handleIconClick}><HelpIcon/></span>
+    <>
+      <button
+        type="button"
+        className="header-help-btn"
+        onClick={handleIconClick}
+        aria-label="How to play"
+      >
+        ?
+      </button>
       {isModalOpen && <Modal onClose={handleCloseModal} />}
-    </div>
+    </>
   );
 };
 

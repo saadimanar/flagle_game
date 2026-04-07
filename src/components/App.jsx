@@ -6,8 +6,6 @@ import countriesData from "../countries.json"
 import { getDistance } from 'geolib';
 import Select from 'react-select';
 
-const DEFAULT_FLAGS_BASE_URL = 'https://flagle-flags-bucket.s3.us-east-1.amazonaws.com';
-
 function App(){
   const [currentCountry, setCurrentCountry] = useState(null);
   const [flagCode, setFlagCode] = useState("");
@@ -94,7 +92,7 @@ function App(){
     }
   };
 
-  const flagPath = `${import.meta.env.VITE_FLAGS_BASE_URL || DEFAULT_FLAGS_BASE_URL}/SVG/${flagCode}.svg`;
+  const flagPath = `${import.meta.env.VITE_FLAGS_BASE_URL }/SVG/${flagCode}.svg`;
 
   return(
   <div>
